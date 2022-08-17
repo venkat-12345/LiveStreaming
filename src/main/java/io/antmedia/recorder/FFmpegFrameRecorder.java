@@ -22,6 +22,7 @@ import static org.bytedeco.ffmpeg.global.avcodec.AV_CODEC_ID_PCM_U16BE;
 import static org.bytedeco.ffmpeg.global.avcodec.AV_CODEC_ID_PCM_U16LE;
 import static org.bytedeco.ffmpeg.global.avcodec.AV_CODEC_ID_PNG;
 import static org.bytedeco.ffmpeg.global.avcodec.AV_CODEC_ID_RAWVIDEO;
+import static org.bytedeco.ffmpeg.global.avcodec.AV_PKT_DATA_MATROSKA_BLOCKADDITIONAL;
 import static org.bytedeco.ffmpeg.global.avcodec.AV_INPUT_BUFFER_MIN_SIZE;
 import static org.bytedeco.ffmpeg.global.avcodec.AV_PKT_FLAG_KEY;
 import static org.bytedeco.ffmpeg.global.avcodec.av_init_packet;
@@ -573,7 +574,9 @@ public class FFmpegFrameRecorder extends FrameRecorder {
 				oformat.video_codec(AV_CODEC_ID_H263);
 			} else if ("avi".equals(format_name)) {
 				oformat.video_codec(AV_CODEC_ID_HUFFYUV);
-			}
+			} else if ("mkv".equals(format_name)) {
+				oformat.video_codec(AV_PKT_DATA_MATROSKA_BLOCKADDITIONAL);
+			} 
 
 			/* find the video encoder */
 			if ((video_codec = avcodec_find_encoder_by_name(videoCodecName)) == null &&
@@ -715,7 +718,7 @@ public class FFmpegFrameRecorder extends FrameRecorder {
 		if (audioChannels > 0 && audioBitrate > 0 && sampleRate > 0) {
 			if (audioCodec != AV_CODEC_ID_NONE) {
 				oformat.audio_codec(audioCodec);
-			} else if ("flv".equals(format_name) || "mp4".equals(format_name) || "3gp".equals(format_name)) {
+			} else if ("flv".equals(format_name) || "mp4".equals(format_name) || "3gp".equals(format_name) || "mkv".equals(format_name)) {
 				oformat.audio_codec(AV_CODEC_ID_AAC);
 			} else if ("avi".equals(format_name)) {
 				oformat.audio_codec(AV_CODEC_ID_PCM_S16LE);
